@@ -171,6 +171,29 @@
             line-height: 1.5;
         }
 
+        /* Спец. карточка для классного руководителя */
+        .teacher-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255, 107, 157, 0.05));
+            border: 1px solid rgba(255, 107, 157, 0.5);
+            box-shadow: 0 0 30px rgba(255, 107, 157, 0.15);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .teacher-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+            transform: skewX(-20deg);
+            animation: shine-effect 4s infinite;
+        }
+        @keyframes shine-effect {
+            0% { left: -100%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+
         /* --- МАГИЯ --- */
         .magic-container {
             background: var(--glass-bg);
@@ -289,7 +312,7 @@
             <div style="text-align: center; padding-top: 15vh;">
                 <i class="fa-solid fa-gift" style="font-size: 70px; color: var(--accent); margin-bottom: 25px; filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.5));"></i>
                 <h1>С 8 МАРТА!</h1>
-                <p>Эксклюзивное приложение только для самых лучших девочек нашего 8D класса. Мы собрали здесь кое-что особенное для вас.</p>
+                <p>Эксклюзивный сайт только для самых лучших девочек нашего 8D класса. Мы собрали здесь кое-что особенное для вас.</p>
                 
                 <div class="card" style="margin-top: 40px; text-align: left; display: block;">
                     <h3 style="text-align: left; font-size: 1.1rem; margin-bottom: 10px;">Как этим пользоваться? </h3>
@@ -298,13 +321,24 @@
             </div>
         </section>
 
-        <!-- ВКЛАДКА: ДЕВОЧКИ -->
+        <!-- ВКЛАДКА: ДЕВОЧКИ (И КЛАССНЫЙ РУКОВОДИТЕЛЬ) -->
         <section id="hall" class="tab-content">
             <h2>ЗАЛ СЛАВЫ</h2>
             <p>Вы – украшение нашего 8 класса</p>
             
+            <!-- КАРТОЧКА КЛАССНОГО РУКОВОДИТЕЛЯ -->
+            <div class="card teacher-card">
+                <div class="card-icon" style="font-size: 26px;">👑</div>
+                <div class="card-content">
+                    <div class="name" style="font-size: 1.15rem;">Арайлым <span>Өтегенқызы</span></div>
+                    <div class="description" style="color: #fff; font-weight: 500;">Очень добрая, невероятно красивая и просто самая лучшая классная руководительница! Спасибо вам за всё! ❤️</div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 1.2rem; text-align: left; margin-bottom: 15px; margin-left: 10px; color: #ff6b9d;">НАШИ ДЕВОЧКИ:</h3>
+
             <div class="grid">
-                <!-- Карточки с обновленным текстом -->
+                <!-- Карточки девочек -->
                 <div class="card">
                     <div class="card-icon">🧬</div>
                     <div class="card-content">
@@ -372,7 +406,7 @@
                 <div class="card">
                     <div class="card-icon">✨</div>
                     <div class="card-content">
-                        <div class="name">Умай</div>
+                        <div class="name">Умай <span>Тойгонбаева</span></div>
                         <div class="description">Искренняя и добрая. Та самая подруга, чья поддержка – на вес золота!</div>
                     </div>
                 </div>
@@ -393,7 +427,7 @@
             <p>Узнай, что приготовил для тебя этот март</p>
             
             <div class="magic-container">
-                <i class="fa-solid fa-crystal-ball" style="font-size: 60px; color: #fff; margin-bottom: 10px;"></i>
+                <i class="fa-solid fa-wand-magic-sparkles" style="font-size: 60px; color: #fff; margin-bottom: 10px;"></i>
                 <div id="prediction-text">Нажми на кнопку, чтобы получить свое личное предсказание!</div>
                 <button class="btn" onclick="generatePrediction()">КРУТИТЬ РУЛЕТКУ</button>
             </div>
@@ -406,7 +440,7 @@
                 
                 <div class="card" style="display: block; text-align: left; padding: 30px; margin-top: 20px;">
                     <i class="fa-solid fa-quote-left" style="font-size: 30px; color: var(--accent); margin-bottom: 15px;"></i>
-                    <p style="text-align: left; color: #fff; font-size: 1rem;"><strong>Дорогие наши девочки!</strong></p>
+                    <p style="text-align: left; color: #fff; font-size: 1rem;"><strong>Дорогие наши девочки и Арайлым Өтегенқызы!</strong></p>
                     <p style="text-align: left; font-size: 0.95rem;">Мы хотим сказать вам спасибо за то, что вы такие классные. С вами всегда весело, интересно и никогда не бывает скучно.</p>
                     <p style="text-align: left; font-size: 0.95rem;">Оставайтесь такими же умными, красивыми и крутыми. Пусть эта весна принесет вам только отличные оценки, крутые моменты и море позитива.</p>
                     <p style="text-align: left; margin-bottom: 0; font-family: 'Unbounded', sans-serif; color: var(--accent);">С праздником! 💐</p>
@@ -423,7 +457,7 @@
         </div>
         <div class="nav-item" onclick="switchTab('hall', this)">
             <i class="fa-solid fa-crown"></i>
-            <span>Девочки</span>
+            <span>Наш класс</span>
         </div>
         <div class="nav-item" onclick="switchTab('magic', this)">
             <i class="fa-solid fa-wand-magic-sparkles"></i>
@@ -482,13 +516,4 @@
                 textElement.innerText = predictions[randomIndex];
                 textElement.style.transition = 'opacity 0.6s ease';
                 textElement.style.opacity = '1';
-                button.innerText = "ПОПРОБОВАТЬ ЕЩЕ";
-                button.style.transform = "scale(1)";
-                isAnimating = false;
-            }, 800);
-        }
-    </script>
-</body>
-</html>
-
-
+                button.innerText = "ПОПРОБОВАТЬ ЕЩЕ"
