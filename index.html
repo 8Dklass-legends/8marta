@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>8 Марта | Наш 8 Класс</title>
+    <!-- Шрифты и иконки -->
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text-main: #ffffff;
+            --text-muted: #c4c4d4;
+            --accent: #ff6b9d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #050505;
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* --- АНИМИРОВАННЫЙ ФОН --- */
+        .bg-shapes {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .shape {
+            position: absolute;
+            filter: blur(70px);
+            border-radius: 50%;
+            animation: moveShape 15s infinite alternate ease-in-out;
+            opacity: 0.6;
+        }
+        .shape-1 {
+            width: 300px; height: 300px;
+            background: #ff2a75;
+            top: -10%; left: -10%;
+            animation-delay: 0s;
+        }
+        .shape-2 {
+            width: 400px; height: 400px;
+            background: #7a28cb;
+            bottom: -20%; right: -10%;
+            animation-delay: -5s;
+        }
+        .shape-3 {
+            width: 250px; height: 250px;
+            background: #ff9a44;
+            top: 40%; left: 60%;
+            animation-delay: -10s;
+        }
+
+        @keyframes moveShape {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 50px) scale(1.1); }
+            100% { transform: translate(-30px, 80px) scale(0.9); }
+        }
+
+        /* --- ОСНОВНОЙ КОНТЕЙНЕР --- */
+        main {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 20px 20px 100px 20px;
+            scroll-behavior: smooth;
+        }
+
+        .tab-content {
+            display: none;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .tab-content.active { display: block; }
+
+        /* --- ТИПОГРАФИКА --- */
+        h1, h2, h3 {
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 8vw, 3rem);
+            background: linear-gradient(to right, #ff9a44, #fc6076, #ff9a44);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite;
+        }
+
+        h2 { font-size: 1.5rem; letter-spacing: 1px; }
+
+        p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+
+        /* --- КАРТОЧКИ (GLASSMORPHISM) --- */
+        .grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 25px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .card:active { transform: scale(0.97); background: rgba(255, 255, 255, 0.12); }
+
+        .card-icon {
+            font-size: 28px;
+            background: rgba(255, 255, 255, 0.1);
+            width: 50px; height: 50px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 16px;
+            flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .card-content { flex: 1; text-align: left; }
+
+        .name {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .name span { color: var(--accent); }
+
+        .description {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* --- МАГИЯ --- */
+        .magic-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 16px 32px;
+            font-size: 1rem;
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+            margin-top: 25px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .btn:active { transform: scale(0.95); }
+
+        #prediction-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #fff;
+            margin-top: 20px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- НИЖНЕЕ МЕНЮ (iOS СТИЛЬ) --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 400px;
+            background: rgba(20, 20, 25, 0.7);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 10px;
+            z-index: 100;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .nav-item {
+            color: #888899;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.65rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            width: 25%;
+            padding: 8px 0;
+            border-radius: 20px;
+        }
+
+        .nav-item i {
+            font-size: 1.3rem;
+            margin-bottom: 4px;
+            transition: transform 0.3s;
+        }
+
+        .nav-item.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item.active i { transform: scale(1.15); color: var(--accent); }
+
+        /* --- АНИМАЦИИ --- */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        ::-webkit-scrollbar { width: 0; }
+    </style>
+</head>
+<body>
+
+    <!-- Анимированные цветовые пятна на фоне -->
+    <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <main id="main-scroll">
+        
+        <!-- ВКЛАДКА: ГЛАВНАЯ -->
+        <section id="home" class="tab-content active">
+            <div style="text-align: center; padding-top: 15vh;">
+                <i class="fa-solid fa-gift" style="font-size: 70px; color: var(--accent); margin-bottom: 25px; filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.5));"></i>
+                <h1>С 8 МАРТА!</h1>
+                <p>Эксклюзивное приложение только для самых лучших девочек нашего 8D класса. Мы собрали здесь кое-что особенное для вас.</p>
+                
+                <div class="card" style="margin-top: 40px; text-align: left; display: block;">
+                    <h3 style="text-align: left; font-size: 1.1rem; margin-bottom: 10px;">Как этим пользоваться? </h3>
+                    <p style="text-align: left; margin: 0; font-size: 0.85rem;">Используйте вкладки внизу экрана, чтобы посмотреть «Зал Славы» и получить весеннее предсказание.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ВКЛАДКА: ДЕВОЧКИ -->
+        <section id="hall" class="tab-content">
+            <h2>ЗАЛ СЛАВЫ</h2>
+            <p>Вы – украшение нашего 8 класса</p>
+            
+            <div class="grid">
+                <!-- Карточки с обновленным текстом -->
+                <div class="card">
+                    <div class="card-icon">🧬</div>
+                    <div class="card-content">
+                        <div class="name">Азель <span>Тельман</span></div>
+                        <div class="description">Магистр биологии и один из двигателей 8-го класса. Заряжает энергией быстрее, чем фотосинтез!</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">💎</div>
+                    <div class="card-content">
+                        <div class="name">Аксая <span>Саттар</span></div>
+                        <div class="description">Воплощение гармонии. Сочетание хорошего ума, красоты и редкого в наше время спокойствия.</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">☕</div>
+                    <div class="card-content">
+                        <div class="name">Виктория <span>Ким</span></div>
+                        <div class="description">Мастер душевных разговоров. Добрая, спокойная и всегда открытая к классному общению.</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">⚡</div>
+                    <div class="card-content">
+                        <div class="name">Дана <span>Гуральник</span></div>
+                        <div class="description">Главный двигатель всех проектов. Энергии хватит, чтобы осветить весь город. Наша звезда сцены!</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🏐</div>
+                    <div class="card-content">
+                        <div class="name">Ляйсан <span>Албурина</span></div>
+                        <div class="description">Королева волейбольной площадки. Человек с добрыми делами, сердцем, также с отличной подачей.</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🚀</div>
+                    <div class="card-content">
+                        <div class="name">Анастасия <span>Терёхина</span></div>
+                        <div class="description">Ум, спорт и законы физики. Настя доказывает, что идеальное ускорение существует не только в учебниках!</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🤍</div>
+                    <div class="card-content">
+                        <div class="name">Сафина <span>Насырова</span></div>
+                        <div class="description">Человек с большим сердцем и добрыми делами. Наш главный волонтер!</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🌟</div>
+                    <div class="card-content">
+                        <div class="name">Александра <span>Югай</span></div>
+                        <div class="description">Самый надежный друг и невероятно светлый человек. Сафина и Саша – друзья на веки с нашего класса!</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">✨</div>
+                    <div class="card-content">
+                        <div class="name">Умай</div>
+                        <div class="description">Искренняя и добрая. Та самая подруга, чья поддержка – на вес золота!</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🇰🇷</div>
+                    <div class="card-content">
+                        <div class="name">Виталина <span>Хван</span></div>
+                        <div class="description">Global Style & Intelligence. Умная и красивая девушка с Кореи. Рады, что ты теперь в нашей команде!</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ВКЛАДКА: ПРЕДСКАЗАНИЯ -->
+        <section id="magic" class="tab-content">
+            <h2>МАГИЯ ВЕСНЫ</h2>
+            <p>Узнай, что приготовил для тебя этот март</p>
+            
+            <div class="magic-container">
+                <i class="fa-solid fa-crystal-ball" style="font-size: 60px; color: #fff; margin-bottom: 10px;"></i>
+                <div id="prediction-text">Нажми на кнопку, чтобы получить свое личное предсказание!</div>
+                <button class="btn" onclick="generatePrediction()">КРУТИТЬ РУЛЕТКУ</button>
+            </div>
+        </section>
+
+        <!-- ВКЛАДКА: ПОСЛАНИЕ -->
+        <section id="message" class="tab-content">
+            <div style="padding-top: 5vh;">
+                <h2>ОТ ПАЦАНОВ</h2>
+                
+                <div class="card" style="display: block; text-align: left; padding: 30px; margin-top: 20px;">
+                    <i class="fa-solid fa-quote-left" style="font-size: 30px; color: var(--accent); margin-bottom: 15px;"></i>
+                    <p style="text-align: left; color: #fff; font-size: 1rem;"><strong>Дорогие наши девочки!</strong></p>
+                    <p style="text-align: left; font-size: 0.95rem;">Мы хотим сказать вам спасибо за то, что вы такие классные. С вами всегда весело, интересно и никогда не бывает скучно.</p>
+                    <p style="text-align: left; font-size: 0.95rem;">Оставайтесь такими же умными, красивыми и крутыми. Пусть эта весна принесет вам только отличные оценки, крутые моменты и море позитива.</p>
+                    <p style="text-align: left; margin-bottom: 0; font-family: 'Unbounded', sans-serif; color: var(--accent);">С праздником! 💐</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- НИЖНЯЯ НАВИГАЦИЯ -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="switchTab('home', this)">
+            <i class="fa-solid fa-house-chimney"></i>
+            <span>Главная</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('hall', this)">
+            <i class="fa-solid fa-crown"></i>
+            <span>Девочки</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('magic', this)">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span>Магия</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('message', this)">
+            <i class="fa-solid fa-heart"></i>
+            <span>От нас</span>
+        </div>
+    </nav>
+
+    <script>
+        // Переключение вкладок
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+            document.getElementById('main-scroll').scrollTo(0, 0);
+        }
+
+        // Предсказания
+        const predictions = [
+            "Этой весной ты получишь пятерку по самому сложному предмету! 📚",
+            "Тебя ждет невероятно смешной и крутой день с лучшей подругой. 👯‍♀️",
+            "Кто-то сделает тебе очень приятный и неожиданный сюрприз! 🎁",
+            "Твоя любимая песня заиграет в самый идеальный момент. 🎧",
+            "Отменят ту самую контрольную, к которой ты не хотела готовиться! 🤫",
+            "Ты найдешь деньги в кармане весенней куртки! 💸",
+            "Твой стиль этой весной соберет миллион комплиментов. ✨",
+            "Учителя будут в приятном шоке от твоих гениальных ответов. 🧠",
+            "Тебя ждет очень классная поездка или крутые выходные. ☀️",
+            "Скоро случится событие, которое заставит тебя улыбаться всю неделю! 😊"
+        ];
+
+        let isAnimating = false;
+
+        function generatePrediction() {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            const textElement = document.getElementById('prediction-text');
+            const button = document.querySelector('.btn');
+            
+            textElement.style.opacity = '0';
+            button.innerText = "Узнаем будущее...";
+            button.style.transform = "scale(0.95)";
+            
+            setTimeout(() => {
+                const randomIndex = Math.floor(Math.random() * predictions.length);
+                textElement.innerText = predictions[randomIndex];
+                textElement.style.transition = 'opacity 0.6s ease';
+                textElement.style.opacity = '1';
+                button.innerText = "ПОПРОБОВАТЬ ЕЩЕ";
+                button.style.transform = "scale(1)";
+                isAnimating = false;
+            }, 800);
+        }
+    </script>
+</body>
+</html>
+
+
