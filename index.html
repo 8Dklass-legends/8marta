@@ -35,6 +35,88 @@
             position: relative;
         }
 
+        /* --- ИНТРО ЭКРАН (ПОДАРОК) --- */
+        #intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 5, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        #intro-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .intro-title {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .intro-subtitle {
+            color: var(--accent);
+            margin-bottom: 40px;
+            animation: pulse-text 1.5s infinite alternate;
+        }
+
+        @keyframes pulse-text {
+            from { opacity: 0.5; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1.02); }
+        }
+
+        #gift-box {
+            font-size: 100px;
+            cursor: pointer;
+            user-select: none;
+            animation: pulse-gift 2s infinite;
+            filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.5));
+        }
+
+        @keyframes pulse-gift {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1) rotate(5deg); }
+            100% { transform: scale(1); }
+        }
+
+        .gift-explode {
+            animation: explode-out 0.5s forwards ease-out !important;
+        }
+
+        @keyframes explode-out {
+            0% { transform: scale(1.1); opacity: 1; }
+            50% { transform: scale(1.5); filter: brightness(2) drop-shadow(0 0 40px #fff); }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            animation: shoot-out 0.8s ease-out forwards;
+        }
+
+        @keyframes shoot-out {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+
         /* --- АНИМИРОВАННЫЙ ФОН --- */
         .bg-shapes {
             position: fixed;
@@ -298,6 +380,19 @@
 </head>
 <body>
 
+    <!-- Фоновая музыка (Заиграет после клика) -->
+    <audio id="bg-music" loop>
+        <!-- Спокойная красивая музыка, можно заменить на свою -->
+        <source src="https://freepd.com/music/Romantic%20Piano.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- ИНТРО С ПОДАРКОМ -->
+    <div id="intro-screen">
+        <h2 class="intro-title">Для нашего 8D класса...</h2>
+        <p class="intro-subtitle">Нажми на подарок!</p>
+        <div id="gift-box">🎁</div>
+    </div>
+
     <!-- Анимированные цветовые пятна на фоне -->
     <div class="bg-shapes">
         <div class="shape shape-1"></div>
@@ -309,12 +404,27 @@
         
         <!-- ВКЛАДКА: ГЛАВНАЯ -->
         <section id="home" class="tab-content active">
-            <div style="text-align: center; padding-top: 15vh;">
-                <i class="fa-solid fa-gift" style="font-size: 70px; color: var(--accent); margin-bottom: 25px; filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.5));"></i>
+            <div style="text-align: center; padding-top: 5vh;">
+                <i class="fa-solid fa-gift" style="font-size: 60px; color: var(--accent); margin-bottom: 15px; filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.5));"></i>
                 <h1>С 8 МАРТА!</h1>
                 <p>Эксклюзивный сайт только для самых лучших девочек нашего 8D класса. Мы собрали здесь кое-что особенное для вас.</p>
                 
-                <div class="card" style="margin-top: 40px; text-align: left; display: block;">
+                <!-- ДОБАВЛЕННЫЙ СТИШОК -->
+                <div class="card" style="display: block; text-align: center; margin-top: 25px; background: rgba(255, 107, 157, 0.08); border-color: rgba(255, 107, 157, 0.2);">
+                    <h3 style="color: var(--accent); margin-bottom: 15px; font-size: 1.2rem;">✨ С праздником весны! ✨</h3>
+                    <p style="font-style: italic; color: #fff; line-height: 1.8; margin-bottom: 0;">
+                        Восьмое марта — день чудесный,<br>
+                        День радости и красоты!<br>
+                        Пусть жизнь становится как песня,<br>
+                        И исполняются мечты!<br><br>
+                        Улыбок, счастья, вдохновенья,<br>
+                        Прекрасных, светлых, ярких дней.<br>
+                        И пусть весеннее мгновенье<br>
+                        Согреет теплотой своей!
+                    </p>
+                </div>
+
+                <div class="card" style="margin-top: 20px; text-align: left; display: block;">
                     <h3 style="text-align: left; font-size: 1.1rem; margin-bottom: 10px;">Как этим пользоваться? </h3>
                     <p style="text-align: left; margin: 0; font-size: 0.85rem;">Используйте вкладки внизу экрана, чтобы посмотреть «Зал Славы» и получить весеннее предсказание.</p>
                 </div>
@@ -438,7 +548,8 @@
             <div style="padding-top: 5vh;">
                 <h2>ОТ ПАЦАНОВ</h2>
                 
-                <div class="card" style="display: block; text-align: left; padding: 30px; margin-top: 20px;">
+                <div class="card"
+                    style="display: block; text-align: left; padding: 30px; margin-top: 20px;">
                     <i class="fa-solid fa-quote-left" style="font-size: 30px; color: var(--accent); margin-bottom: 15px;"></i>
                     <p style="text-align: left; color: #fff; font-size: 1rem;"><strong>Дорогие наши девочки и Арайлым Өтегенқызы!</strong></p>
                     <p style="text-align: left; font-size: 0.95rem;">Мы хотим сказать вам спасибо за то, что вы такие классные. С вами всегда весело, интересно и никогда не бывает скучно.</p>
@@ -470,7 +581,55 @@
     </nav>
 
     <script>
-        // Переключение вкладок
+        // --- ЛОГИКА ПОДАРКА И ИНТРО ---
+        const giftBox = document.getElementById('gift-box');
+        const introScreen = document.getElementById('intro-screen');
+        const bgMusic = document.getElementById('bg-music');
+
+        giftBox.addEventListener('click', (e) => {
+            // Включаем музыку
+            bgMusic.volume = 0.5;
+            bgMusic.play().catch(err => console.log("Музыка заблокирована браузером до взаимодействия", err));
+
+            // Анимация подарка
+            giftBox.classList.add('gift-explode');
+            
+            // Координаты для конфетти
+            const rect = giftBox.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+            createConfetti(x, y);
+
+            // Прячем интро экран
+            setTimeout(() => {
+                introScreen.classList.add('hidden');
+            }, 600);
+        });
+
+        // Функция взрыва конфетти
+        function createConfetti(x, y) {
+            const colors = ['#ff2a75', '#7a28cb', '#ff9a44', '#ffffff', '#ff6b9d'];
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'confetti';
+                
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 200 + 50;
+                
+                particle.style.setProperty('--tx', `${Math.cos(angle) * speed}px`);
+                particle.style.setProperty('--ty', `${Math.sin(angle) * speed}px`);
+                
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                document.body.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 800);
+            }
+        }
+
+        // --- ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК ---
         function switchTab(tabId, element) {
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
@@ -484,7 +643,7 @@
             document.getElementById('main-scroll').scrollTo(0, 0);
         }
 
-        // Предсказания
+        // --- ПРЕДСКАЗАНИЯ ---
         const predictions = [
             "Этой весной ты получишь пятерку по самому сложному предмету! 📚",
             "Тебя ждет невероятно смешной и крутой день с лучшей подругой. 👯‍♀️",
@@ -524,5 +683,3 @@
     </script>
 </body>
 </html>
-
-
